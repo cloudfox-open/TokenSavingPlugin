@@ -1,0 +1,18 @@
+{
+    "display_name": "TokenSaving - 缓存命中优化",
+    "loading_order": 15,
+    "requires": [],
+    "optional": [],
+    "dependencies": [],
+    "js": "index.js",
+    "css": "style.css",
+    "author": "cloudfox-open",
+    "version": "1.4.0",
+    "homePage": "https://github.com/cloudfox-open/TokenSavingPlugin",
+    "auto_update": true,
+    "minimum_client_version": "1.12.0",
+    "description": "...",
+    "hooks": {
+        "activate": "init"
+    }
+}

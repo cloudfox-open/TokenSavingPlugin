@@ -1,0 +1,1256 @@
+/* ============================================================
+   TokenSavingPlugin — 毛玻璃 · 高贵白色
+   ============================================================ */
+
+.tokensaving-settings {
+    /* ---------- 强调色 ---------- */
+    --ts-accent: #a5b4fc;           /* 柔和靛蓝 */
+    --ts-accent-2: #c4b5fd;         /* 柔和紫罗兰 */
+    --ts-gold: #e8d5a8;             /* 香槟金 */
+    --ts-gold-strong: #d4b878;
+    --ts-gold-glow: rgba(232, 213, 168, 0.35);
+
+    --ts-success: #6ee7b7;
+    --ts-warn: #fcd34d;
+    --ts-danger: #fca5a5;
+
+    /* ---------- 玻璃基底 ---------- */
+    --ts-glass-1: rgba(255, 255, 255, 0.05);
+    --ts-glass-2: rgba(255, 255, 255, 0.09);
+    --ts-glass-3: rgba(255, 255, 255, 0.14);
+    --ts-glass-hover: rgba(255, 255, 255, 0.16);
+
+    /* ---------- 玻璃描边 ---------- */
+    --ts-stroke-1: rgba(255, 255, 255, 0.10);
+    --ts-stroke-2: rgba(255, 255, 255, 0.18);
+    --ts-stroke-glow: rgba(255, 255, 255, 0.32);
+
+    /* ---------- 内高光（玻璃边缘） ---------- */
+    --ts-inset-top: inset 0 1px 0 rgba(255, 255, 255, 0.18);
+    --ts-inset-btm: inset 0 -1px 0 rgba(0, 0, 0, 0.10);
+
+    /* ---------- 模糊 ---------- */
+    --ts-blur-sm: 14px;
+    --ts-blur-md: 22px;
+    --ts-blur-lg: 32px;
+
+    /* ---------- 阴影 ---------- */
+    --ts-shadow-1:
+        0 4px 16px rgba(0, 0, 0, 0.10),
+        0 1px 2px rgba(0, 0, 0, 0.06);
+    --ts-shadow-2:
+        0 10px 32px rgba(0, 0, 0, 0.16),
+        0 2px 6px rgba(0, 0, 0, 0.08);
+    --ts-shadow-gold:
+        0 8px 24px rgba(232, 213, 168, 0.14),
+        0 2px 6px rgba(0, 0, 0, 0.10);
+
+    /* ---------- 圆角 ---------- */
+    --ts-radius-lg: 16px;
+    --ts-radius: 12px;
+    --ts-radius-sm: 8px;
+
+    --ts-gap: 12px;
+
+    /* ---------- 文字 ---------- */
+    --ts-text: rgba(255, 255, 255, 0.96);
+    --ts-text-dim: rgba(255, 255, 255, 0.62);
+    --ts-text-faint: rgba(255, 255, 255, 0.42);
+
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--ts-text);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* 兜底：SillyTavern 主题变量 */
+.tokensaving-settings {
+    --SmartThemeBodyColor: var(--SmartThemeBodyColor, rgba(255, 255, 255, 0.92));
+    --SmartThemeBorderColor: var(--SmartThemeBorderColor, rgba(255, 255, 255, 0.12));
+}
+
+.tokensaving-settings .inline-drawer-content {
+    padding: 10px 2px 6px;
+    display: flex;
+    flex-direction: column;
+    gap: var(--ts-gap);
+    position: relative;
+}
+
+/* ============================================================
+   状态卡片 — 特殊香槟金气质
+   ============================================================ */
+.ts-status-card {
+    position: relative;
+    padding: 14px 16px;
+    border-radius: var(--ts-radius-lg);
+    background:
+        linear-gradient(
+            135deg,
+            rgba(232, 213, 168, 0.08) 0%,
+            rgba(255, 255, 255, 0.06) 40%,
+            rgba(196, 181, 253, 0.06) 100%
+        );
+    border: 1px solid var(--ts-stroke-2);
+    box-shadow: var(--ts-inset-top), var(--ts-shadow-1);
+    backdrop-filter: blur(var(--ts-blur-md)) saturate(180%);
+    -webkit-backdrop-filter: blur(var(--ts-blur-md)) saturate(180%);
+    overflow: hidden;
+    transition: border-color 0.35s ease, box-shadow 0.35s ease, background 0.35s ease;
+}
+
+/* 顶部高光装饰线 */
+.ts-status-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(
+        90deg,
+        transparent 0%,
+        var(--ts-gold-glow) 30%,
+        rgba(255, 255, 255, 0.5) 50%,
+        var(--ts-gold-glow) 70%,
+        transparent 100%
+    );
+    opacity: 0.7;
+    pointer-events: none;
+}
+
+/* 右上角柔光 */
+.ts-status-card::after {
+    content: '';
+    position: absolute;
+    top: -60%;
+    right: -20%;
+    width: 60%;
+    height: 180%;
+    background: radial-gradient(
+        ellipse at center,
+        rgba(232, 213, 168, 0.10) 0%,
+        transparent 70%
+    );
+    pointer-events: none;
+}
+
+.ts-status-card.is-busy {
+    border-color: rgba(252, 211, 77, 0.38);
+    box-shadow:
+        var(--ts-inset-top),
+        0 8px 28px rgba(252, 211, 77, 0.10),
+        var(--ts-shadow-1);
+}
+.ts-status-card.is-success {
+    border-color: rgba(110, 231, 183, 0.38);
+    box-shadow:
+        var(--ts-inset-top),
+        0 8px 28px rgba(110, 231, 183, 0.10),
+        var(--ts-shadow-1);
+}
+.ts-status-card.is-error {
+    border-color: rgba(252, 165, 165, 0.42);
+    box-shadow:
+        var(--ts-inset-top),
+        0 8px 28px rgba(252, 165, 165, 0.10),
+        var(--ts-shadow-1);
+}
+
+.ts-status-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+    position: relative;
+    z-index: 1;
+}
+
+.ts-status-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.35);
+    flex-shrink: 0;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.ts-status-dot::after {
+    content: '';
+    position: absolute;
+    inset: -4px;
+    border-radius: 50%;
+    border: 1px solid currentColor;
+    opacity: 0;
+    transition: opacity 0.35s ease, transform 0.35s ease;
+}
+
+.ts-status-dot.is-idle {
+    background: rgba(255, 255, 255, 0.40);
+    color: rgba(255, 255, 255, 0.40);
+}
+
+.ts-status-dot.is-growing {
+    background: var(--ts-accent);
+    color: var(--ts-accent);
+    box-shadow: 0 0 12px rgba(165, 180, 252, 0.55);
+}
+.ts-status-dot.is-growing::after { opacity: 0.5; }
+
+.ts-status-dot.is-busy {
+    background: var(--ts-warn);
+    color: var(--ts-warn);
+    box-shadow: 0 0 12px rgba(252, 211, 77, 0.65);
+    animation: ts-pulse 1.5s ease-in-out infinite;
+}
+.ts-status-dot.is-busy::after {
+    opacity: 0.6;
+    animation: ts-ring 1.5s ease-in-out infinite;
+}
+
+.ts-status-dot.is-success {
+    background: var(--ts-success);
+    color: var(--ts-success);
+    box-shadow: 0 0 12px rgba(110, 231, 183, 0.55);
+}
+
+.ts-status-dot.is-error {
+    background: var(--ts-danger);
+    color: var(--ts-danger);
+    box-shadow: 0 0 12px rgba(252, 165, 165, 0.60);
+}
+
+@keyframes ts-pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50%      { opacity: 0.65; transform: scale(1.1); }
+}
+
+@keyframes ts-ring {
+    0%   { transform: scale(0.85); opacity: 0.7; }
+    100% { transform: scale(1.5); opacity: 0; }
+}
+
+.ts-status-text {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    color: var(--ts-text);
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+}
+
+/* 进度条 */
+.ts-progress {
+    height: 4px;
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.08);
+    overflow: hidden;
+    margin-bottom: 12px;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.10);
+    position: relative;
+    z-index: 1;
+}
+
+.ts-progress-fill {
+    height: 100%;
+    border-radius: 4px;
+    background: linear-gradient(
+        90deg,
+        var(--ts-accent) 0%,
+        var(--ts-accent-2) 60%,
+        var(--ts-gold) 100%
+    );
+    box-shadow: 0 0 12px rgba(165, 180, 252, 0.5);
+    transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1), background 0.3s ease, box-shadow 0.3s ease;
+}
+
+.ts-progress-fill.is-warn {
+    background: linear-gradient(90deg, var(--ts-warn), #f59e0b);
+    box-shadow: 0 0 12px rgba(252, 211, 77, 0.55);
+}
+.ts-progress-fill.is-error {
+    background: linear-gradient(90deg, #f87171, #dc2626);
+    box-shadow: 0 0 12px rgba(248, 113, 113, 0.55);
+}
+
+/* 指标 */
+.ts-metrics {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    position: relative;
+    z-index: 1;
+}
+
+.ts-metric {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    padding: 8px 10px;
+    border-radius: var(--ts-radius-sm);
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: var(--ts-inset-top);
+    backdrop-filter: blur(var(--ts-blur-sm));
+    -webkit-backdrop-filter: blur(var(--ts-blur-sm));
+    transition: background 0.25s ease, border-color 0.25s ease;
+}
+
+.ts-metric:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.14);
+}
+
+.ts-metric-label {
+    font-size: 9.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.10em;
+    color: var(--ts-gold);
+    font-weight: 700;
+    opacity: 0.85;
+}
+
+.ts-metric-value {
+    font-size: 13px;
+    font-weight: 600;
+    font-family: ui-monospace, "SF Mono", "Menlo", monospace;
+    color: var(--ts-text);
+    letter-spacing: -0.01em;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+}
+
+/* ============================================================
+   通用卡片 — 磨砂白玻璃
+   ============================================================ */
+.ts-card {
+    position: relative;
+    padding: 14px 16px;
+    border-radius: var(--ts-radius-lg);
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255, 255, 255, 0.07) 0%,
+            rgba(255, 255, 255, 0.04) 100%
+        );
+    border: 1px solid var(--ts-stroke-1);
+    box-shadow: var(--ts-inset-top), var(--ts-shadow-1);
+    backdrop-filter: blur(var(--ts-blur-md)) saturate(180%);
+    -webkit-backdrop-filter: blur(var(--ts-blur-md)) saturate(180%);
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    overflow: hidden;
+}
+
+.ts-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 15%;
+    right: 15%;
+    height: 1px;
+    background: linear-gradient(
+        90deg,
+        transparent 0%,
+        rgba(255, 255, 255, 0.35) 50%,
+        transparent 100%
+    );
+    pointer-events: none;
+}
+
+.ts-card:hover {
+    border-color: var(--ts-stroke-2);
+    box-shadow: var(--ts-inset-top), var(--ts-shadow-2);
+}
+
+.ts-card-compact {
+    padding: 12px 16px;
+    gap: 0;
+}
+
+/* 卡片标题 */
+.ts-card-title {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    font-size: 12.5px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    color: var(--ts-text);
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    margin-bottom: -2px;
+    position: relative;
+    z-index: 1;
+}
+
+.ts-card-title i {
+    color: var(--ts-gold);
+    font-size: 13px;
+    width: 16px;
+    text-align: center;
+    filter: drop-shadow(0 0 6px var(--ts-gold-glow));
+}
+
+.ts-card-badge {
+    margin-left: auto;
+    font-size: 10.5px;
+    padding: 3px 10px;
+    border-radius: 999px;
+    background:
+        linear-gradient(
+            135deg,
+            rgba(232, 213, 168, 0.18),
+            rgba(232, 213, 168, 0.08)
+        );
+    color: var(--ts-gold);
+    font-weight: 700;
+    font-family: ui-monospace, monospace;
+    letter-spacing: 0.04em;
+    border: 1px solid rgba(232, 213, 168, 0.25);
+    box-shadow: 0 0 12px rgba(232, 213, 168, 0.08);
+}
+
+/* ============================================================
+   字段
+   ============================================================ */
+.ts-field {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.ts-field-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.ts-field-head label {
+    font-size: 12.5px;
+    font-weight: 500;
+    color: var(--ts-text);
+    flex: 1;
+    cursor: pointer;
+    letter-spacing: 0.005em;
+}
+
+.ts-field-head code {
+    padding: 1px 6px;
+    border-radius: 5px;
+    background: rgba(232, 213, 168, 0.10);
+    font-size: 11px;
+    color: var(--ts-gold);
+    font-family: ui-monospace, monospace;
+    font-weight: 600;
+    border: 1px solid rgba(232, 213, 168, 0.18);
+}
+
+.ts-num {
+    width: 76px;
+    padding: 5px 10px;
+    border-radius: var(--ts-radius-sm);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--ts-text);
+    font-size: 12.5px;
+    font-family: ui-monospace, monospace;
+    font-weight: 600;
+    text-align: right;
+    outline: none;
+    box-shadow: var(--ts-inset-top);
+    backdrop-filter: blur(var(--ts-blur-sm));
+    -webkit-backdrop-filter: blur(var(--ts-blur-sm));
+    transition: all 0.25s ease;
+}
+
+.ts-num:hover {
+    border-color: rgba(255, 255, 255, 0.20);
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.ts-num:focus {
+    border-color: rgba(165, 180, 252, 0.55);
+    background: rgba(165, 180, 252, 0.06);
+    box-shadow:
+        var(--ts-inset-top),
+        0 0 0 3px rgba(165, 180, 252, 0.15),
+        0 0 16px rgba(165, 180, 252, 0.20);
+}
+
+.ts-hint {
+    font-size: 11px;
+    color: var(--ts-text-dim);
+    line-height: 1.45;
+    letter-spacing: 0.005em;
+}
+
+/* ============================================================
+   开关 — 金色高光
+   ============================================================ */
+.ts-switch-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    cursor: pointer;
+    user-select: none;
+}
+
+.ts-switch-row-tight {
+    padding-top: 12px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.ts-row-label {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    flex: 1;
+    min-width: 0;
+}
+
+.ts-row-label b {
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--ts-text);
+    letter-spacing: 0.005em;
+}
+
+.ts-row-label small {
+    font-size: 11px;
+    color: var(--ts-text-dim);
+    line-height: 1.45;
+}
+
+.ts-switch {
+    position: relative;
+    width: 38px;
+    height: 22px;
+    flex-shrink: 0;
+}
+
+.ts-switch input {
+    position: absolute;
+    opacity: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    cursor: pointer;
+    z-index: 2;
+}
+
+.ts-switch-slider {
+    position: absolute;
+    inset: 0;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.10);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    box-shadow:
+        inset 0 2px 6px rgba(0, 0, 0, 0.20),
+        inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    pointer-events: none;
+}
+
+.ts-switch-slider::before {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background:
+        linear-gradient(
+            180deg,
+            #ffffff 0%,
+            #f0f0f5 100%
+        );
+    box-shadow:
+        0 2px 5px rgba(0, 0, 0, 0.30),
+        0 1px 2px rgba(0, 0, 0, 0.20),
+        inset 0 -1px 1px rgba(0, 0, 0, 0.08);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.ts-switch input:checked + .ts-switch-slider {
+    background: linear-gradient(
+        135deg,
+        var(--ts-accent),
+        var(--ts-accent-2)
+    );
+    border-color: rgba(255, 255, 255, 0.30);
+    box-shadow:
+        inset 0 1px 3px rgba(0, 0, 0, 0.20),
+        0 0 16px rgba(165, 180, 252, 0.45),
+        0 0 4px rgba(196, 181, 253, 0.60);
+}
+
+.ts-switch input:checked + .ts-switch-slider::before {
+    transform: translateX(16px);
+}
+
+/* ============================================================
+   窗口可视化
+   ============================================================ */
+.ts-visual-wrap {
+    padding: 12px;
+    border-radius: var(--ts-radius);
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255, 255, 255, 0.05) 0%,
+            rgba(255, 255, 255, 0.02) 100%
+        );
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: var(--ts-inset-top);
+    backdrop-filter: blur(var(--ts-blur-sm));
+    -webkit-backdrop-filter: blur(var(--ts-blur-sm));
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.ts-visual-legend {
+    display: flex;
+    gap: 14px;
+    font-size: 10.5px;
+    color: var(--ts-text-dim);
+    letter-spacing: 0.01em;
+}
+
+.ts-visual-legend span {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.ts-dot {
+    display: inline-block;
+    width: 9px;
+    height: 9px;
+    border-radius: 3px;
+    position: relative;
+}
+
+.ts-dot-retain {
+    background: linear-gradient(135deg, var(--ts-accent), var(--ts-accent-2));
+    box-shadow: 0 0 8px rgba(165, 180, 252, 0.55);
+}
+
+.ts-dot-compress {
+    background: linear-gradient(135deg, var(--ts-gold), var(--ts-gold-strong));
+    box-shadow: 0 0 8px var(--ts-gold-glow);
+}
+
+.ts-visual {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+}
+
+.ts-cell {
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+    font-size: 10.5px;
+    font-weight: 600;
+    font-family: ui-monospace, monospace;
+    color: var(--ts-text-faint);
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: var(--ts-inset-top);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+}
+
+.ts-cell-retain.ts-cell-filled {
+    background: linear-gradient(
+        135deg,
+        rgba(165, 180, 252, 0.28) 0%,
+        rgba(196, 181, 253, 0.20) 100%
+    );
+    border-color: rgba(165, 180, 252, 0.45);
+    color: #dfe4ff;
+    box-shadow:
+        var(--ts-inset-top),
+        0 0 10px rgba(165, 180, 252, 0.30),
+        inset 0 0 12px rgba(165, 180, 252, 0.15);
+}
+
+.ts-cell-compress.ts-cell-filled {
+    background: linear-gradient(
+        135deg,
+        rgba(232, 213, 168, 0.26) 0%,
+        rgba(212, 184, 120, 0.18) 100%
+    );
+    border-color: rgba(232, 213, 168, 0.45);
+    color: #f6ecd4;
+    box-shadow:
+        var(--ts-inset-top),
+        0 0 10px var(--ts-gold-glow),
+        inset 0 0 12px rgba(232, 213, 168, 0.12);
+}
+
+.ts-cell-current {
+    transform: scale(1.14);
+    box-shadow:
+        var(--ts-inset-top),
+        0 0 0 2px rgba(255, 255, 255, 0.30),
+        0 4px 12px rgba(0, 0, 0, 0.20) !important;
+}
+
+.ts-cell-overflow {
+    background: linear-gradient(135deg, #f87171, #dc2626) !important;
+    border-color: rgba(255, 255, 255, 0.30) !important;
+    color: #fff !important;
+    box-shadow:
+        var(--ts-inset-top),
+        0 0 12px rgba(248, 113, 113, 0.55) !important;
+    animation: ts-pulse 1.5s ease-in-out infinite;
+}
+
+/* ============================================================
+   按钮 — 玻璃质感 + 香槟金渐变
+   ============================================================ */
+.ts-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.ts-actions .ts-btn { flex: 1; }
+
+.ts-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    padding: 10px 16px;
+    border-radius: var(--ts-radius);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255, 255, 255, 0.08) 0%,
+            rgba(255, 255, 255, 0.04) 100%
+        );
+    color: var(--ts-text);
+    font-size: 12.5px;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    font-family: inherit;
+    cursor: pointer;
+    outline: none;
+    user-select: none;
+    box-shadow: var(--ts-inset-top), 0 2px 6px rgba(0, 0, 0, 0.10);
+    backdrop-filter: blur(var(--ts-blur-md)) saturate(160%);
+    -webkit-backdrop-filter: blur(var(--ts-blur-md)) saturate(160%);
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.ts-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(
+        90deg,
+        transparent 0%,
+        rgba(255, 255, 255, 0.4) 50%,
+        transparent 100%
+    );
+    pointer-events: none;
+}
+
+.ts-btn i {
+    font-size: 12px;
+    transition: transform 0.25s ease;
+}
+
+.ts-btn:hover {
+    transform: translateY(-2px);
+    border-color: rgba(255, 255, 255, 0.24);
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255, 255, 255, 0.13) 0%,
+            rgba(255, 255, 255, 0.07) 100%
+        );
+    box-shadow:
+        var(--ts-inset-top),
+        0 8px 20px rgba(0, 0, 0, 0.18);
+}
+
+.ts-btn:hover i {
+    transform: scale(1.12);
+}
+
+.ts-btn:active {
+    transform: translateY(0);
+    box-shadow:
+        var(--ts-inset-top),
+        0 2px 6px rgba(0, 0, 0, 0.12);
+}
+
+/* 主按钮 — 紫罗兰渐变 + 香槟金点缀 */
+.ts-btn-primary {
+    background:
+        linear-gradient(
+            135deg,
+            rgba(165, 180, 252, 0.95) 0%,
+            rgba(196, 181, 253, 0.92) 50%,
+            rgba(232, 213, 168, 0.88) 100%
+        );
+    color: #1a1a2e;
+    border-color: rgba(255, 255, 255, 0.35);
+    box-shadow:
+        var(--ts-inset-top),
+        0 4px 16px rgba(165, 180, 252, 0.35),
+        0 2px 6px rgba(0, 0, 0, 0.12);
+    text-shadow: 0 1px 1px rgba(255, 255, 255, 0.25);
+}
+
+.ts-btn-primary:hover {
+    background:
+        linear-gradient(
+            135deg,
+            rgba(180, 193, 255, 1) 0%,
+            rgba(206, 193, 255, 1) 50%,
+            rgba(240, 224, 184, 1) 100%
+        );
+    box-shadow:
+        var(--ts-inset-top),
+        0 8px 24px rgba(165, 180, 252, 0.50),
+        0 4px 10px rgba(232, 213, 168, 0.35);
+}
+
+/* 危险按钮 — 停止 */
+.ts-btn-danger {
+    background:
+        linear-gradient(
+            135deg,
+            rgba(248, 113, 113, 0.95) 0%,
+            rgba(220, 38, 38, 0.92) 100%
+        );
+    color: #fff;
+    border-color: rgba(255, 255, 255, 0.30);
+    box-shadow:
+        var(--ts-inset-top),
+        0 4px 16px rgba(239, 68, 68, 0.40);
+    animation: ts-pulse-danger 2s ease-in-out infinite;
+}
+
+.ts-btn-danger:hover {
+    background:
+        linear-gradient(
+            135deg,
+            rgba(252, 130, 130, 1) 0%,
+            rgba(234, 52, 52, 1) 100%
+        );
+    box-shadow:
+        var(--ts-inset-top),
+        0 8px 24px rgba(239, 68, 68, 0.55);
+}
+
+@keyframes ts-pulse-danger {
+    0%, 100% {
+        box-shadow:
+            var(--ts-inset-top),
+            0 4px 16px rgba(239, 68, 68, 0.40),
+            0 0 0 0 rgba(239, 68, 68, 0.35);
+    }
+    50% {
+        box-shadow:
+            var(--ts-inset-top),
+            0 4px 16px rgba(239, 68, 68, 0.40),
+            0 0 0 6px rgba(239, 68, 68, 0);
+    }
+}
+
+/* 幽灵按钮 */
+.ts-btn-ghost:hover {
+    border-color: rgba(252, 165, 165, 0.55);
+    color: var(--ts-danger);
+    background:
+        linear-gradient(
+            145deg,
+            rgba(252, 165, 165, 0.10) 0%,
+            rgba(252, 165, 165, 0.05) 100%
+        );
+}
+
+/* ============================================================
+   FCC 折叠面板 — 香槟金描边
+   ============================================================ */
+.ts-fcc-panel {
+    border-radius: var(--ts-radius-lg);
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255, 255, 255, 0.06) 0%,
+            rgba(255, 255, 255, 0.03) 100%
+        );
+    border: 1px solid var(--ts-stroke-1);
+    box-shadow: var(--ts-inset-top), var(--ts-shadow-1);
+    backdrop-filter: blur(var(--ts-blur-md)) saturate(180%);
+    -webkit-backdrop-filter: blur(var(--ts-blur-md)) saturate(180%);
+    overflow: hidden;
+    transition: border-color 0.3s ease;
+}
+
+.ts-fcc-panel[open] {
+    border-color: rgba(232, 213, 168, 0.30);
+}
+
+.ts-fcc-panel summary {
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    cursor: pointer;
+    list-style: none;
+    font-size: 12.5px;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    color: var(--ts-text);
+    transition: background 0.25s ease;
+    position: relative;
+}
+
+.ts-fcc-panel summary::-webkit-details-marker { display: none; }
+
+.ts-fcc-panel summary:hover {
+    background: rgba(255, 255, 255, 0.04);
+}
+
+.ts-fcc-panel summary i {
+    color: var(--ts-gold);
+    margin-right: 6px;
+    filter: drop-shadow(0 0 6px var(--ts-gold-glow));
+}
+
+.ts-fcc-meta {
+    font-size: 11px;
+    font-family: ui-monospace, monospace;
+    color: var(--ts-gold);
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    opacity: 0.9;
+}
+
+.ts-fcc-content {
+    margin: 0;
+    padding: 12px 16px;
+    font-family: ui-monospace, "SF Mono", "Menlo", monospace;
+    font-size: 11.5px;
+    line-height: 1.6;
+    color: var(--ts-text);
+    white-space: pre-wrap;
+    word-break: break-word;
+    max-height: 260px;
+    overflow-y: auto;
+    border-top: 1px solid rgba(232, 213, 168, 0.18);
+    background:
+        linear-gradient(
+            180deg,
+            rgba(232, 213, 168, 0.03) 0%,
+            rgba(255, 255, 255, 0.02) 100%
+        );
+    letter-spacing: 0.005em;
+}
+
+.ts-fcc-content::-webkit-scrollbar { width: 8px; }
+.ts-fcc-content::-webkit-scrollbar-track { background: transparent; }
+.ts-fcc-content::-webkit-scrollbar-thumb {
+    background: linear-gradient(
+        180deg,
+        rgba(232, 213, 168, 0.35),
+        rgba(232, 213, 168, 0.20)
+    );
+    border-radius: 4px;
+    border: 2px solid transparent;
+    background-clip: padding-box;
+}
+.ts-fcc-content::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(
+        180deg,
+        rgba(232, 213, 168, 0.55),
+        rgba(232, 213, 168, 0.35)
+    );
+    background-clip: padding-box;
+}
+
+/* ============================================================
+   页脚 — 金色小提示
+   ============================================================ */
+.ts-footer {
+    padding: 10px 14px;
+    border-radius: var(--ts-radius);
+    background:
+        linear-gradient(
+            135deg,
+            rgba(232, 213, 168, 0.06) 0%,
+            rgba(255, 255, 255, 0.03) 100%
+        );
+    border: 1px solid rgba(232, 213, 168, 0.14);
+    box-shadow: var(--ts-inset-top);
+    backdrop-filter: blur(var(--ts-blur-sm));
+    -webkit-backdrop-filter: blur(var(--ts-blur-sm));
+    font-size: 11px;
+    color: var(--ts-text-dim);
+    text-align: center;
+    line-height: 1.55;
+    letter-spacing: 0.01em;
+}
+
+.ts-footer code {
+    padding: 1px 6px;
+    border-radius: 5px;
+    background: rgba(232, 213, 168, 0.12);
+    color: var(--ts-gold);
+    font-family: ui-monospace, monospace;
+    font-size: 10.5px;
+    font-weight: 600;
+    border: 1px solid rgba(232, 213, 168, 0.20);
+    margin: 0 2px;
+}
+
+/* ============================================================
+   亮色主题兼容（若 SillyTavern 使用亮色主题）
+   ============================================================ */
+body.light .tokensaving-settings,
+.light .tokensaving-settings {
+    --ts-glass-1: rgba(0, 0, 0, 0.03);
+    --ts-glass-2: rgba(0, 0, 0, 0.05);
+    --ts-glass-3: rgba(0, 0, 0, 0.08);
+    --ts-stroke-1: rgba(0, 0, 0, 0.08);
+    --ts-stroke-2: rgba(0, 0, 0, 0.14);
+    --ts-text: rgba(20, 20, 30, 0.95);
+    --ts-text-dim: rgba(20, 20, 30, 0.60);
+    --ts-text-faint: rgba(20, 20, 30, 0.42);
+    --ts-inset-top: inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+
+.light .tokensaving-settings .ts-card,
+body.light .tokensaving-settings .ts-card {
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255, 255, 255, 0.85) 0%,
+            rgba(255, 255, 255, 0.65) 100%
+        );
+    border-color: rgba(0, 0, 0, 0.08);
+    box-shadow:
+        var(--ts-inset-top),
+        0 4px 16px rgba(0, 0, 0, 0.06);
+}
+
+.light .tokensaving-settings .ts-status-card,
+body.light .tokensaving-settings .ts-status-card {
+    background:
+        linear-gradient(
+            135deg,
+            rgba(232, 213, 168, 0.18) 0%,
+            rgba(255, 255, 255, 0.85) 40%,
+            rgba(196, 181, 253, 0.14) 100%
+        );
+    border-color: rgba(0, 0, 0, 0.10);
+}
+
+.light .tokensaving-settings .ts-btn,
+body.light .tokensaving-settings .ts-btn {
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255, 255, 255, 0.90) 0%,
+            rgba(255, 255, 255, 0.70) 100%
+        );
+    border-color: rgba(0, 0, 0, 0.10);
+    color: rgba(20, 20, 30, 0.92);
+}
+
+.light .tokensaving-settings .ts-num,
+body.light .tokensaving-settings .ts-num {
+    background: rgba(255, 255, 255, 0.70);
+    border-color: rgba(0, 0, 0, 0.10);
+    color: rgba(20, 20, 30, 0.92);
+}
+
+/* ============================================================
+   智能预设（v1.4 追加）
+   ============================================================ */
+.ts-card-preset {
+    background:
+        linear-gradient(
+            135deg,
+            rgba(232, 213, 168, 0.08) 0%,
+            rgba(165, 180, 252, 0.06) 50%,
+            rgba(255, 255, 255, 0.04) 100%
+        );
+    border-color: rgba(232, 213, 168, 0.22);
+}
+
+.ts-preset-hint {
+    font-size: 11.5px;
+    color: var(--ts-text-dim);
+    line-height: 1.5;
+    letter-spacing: 0.005em;
+}
+
+.ts-preset-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+}
+
+.ts-preset-btn {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 10px 12px;
+    border-radius: var(--ts-radius);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255, 255, 255, 0.06) 0%,
+            rgba(255, 255, 255, 0.03) 100%
+        );
+    color: var(--ts-text);
+    font-size: 12px;
+    font-family: inherit;
+    cursor: pointer;
+    outline: none;
+    text-align: left;
+    box-shadow: var(--ts-inset-top), 0 2px 6px rgba(0, 0, 0, 0.08);
+    backdrop-filter: blur(var(--ts-blur-sm));
+    -webkit-backdrop-filter: blur(var(--ts-blur-sm));
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.ts-preset-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(
+        90deg,
+        transparent 0%,
+        rgba(255, 255, 255, 0.35) 50%,
+        transparent 100%
+    );
+    pointer-events: none;
+}
+
+.ts-preset-btn:hover {
+    transform: translateY(-2px);
+    border-color: rgba(232, 213, 168, 0.45);
+    background:
+        linear-gradient(
+            145deg,
+            rgba(232, 213, 168, 0.10) 0%,
+            rgba(255, 255, 255, 0.06) 100%
+        );
+    box-shadow:
+        var(--ts-inset-top),
+        0 8px 20px rgba(232, 213, 168, 0.18);
+}
+
+.ts-preset-btn:active {
+    transform: translateY(0);
+}
+
+.ts-preset-btn.is-active {
+    border-color: rgba(232, 213, 168, 0.65);
+    background:
+        linear-gradient(
+            135deg,
+            rgba(232, 213, 168, 0.22) 0%,
+            rgba(196, 181, 253, 0.15) 100%
+        );
+    box-shadow:
+        var(--ts-inset-top),
+        0 4px 16px rgba(232, 213, 168, 0.30),
+        inset 0 0 20px rgba(232, 213, 168, 0.10);
+}
+
+.ts-preset-btn-head {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12.5px;
+    font-weight: 700;
+    color: var(--ts-text);
+    letter-spacing: 0.01em;
+}
+
+.ts-preset-btn-head i {
+    color: var(--ts-gold);
+    font-size: 11.5px;
+    filter: drop-shadow(0 0 5px var(--ts-gold-glow));
+}
+
+.ts-preset-btn-desc {
+    font-size: 10.5px;
+    color: var(--ts-text-dim);
+    line-height: 1.4;
+    letter-spacing: 0.005em;
+}
+
+.ts-preset-current {
+    padding: 8px 12px;
+    border-radius: var(--ts-radius-sm);
+    background: rgba(232, 213, 168, 0.06);
+    border: 1px solid rgba(232, 213, 168, 0.16);
+    font-size: 11px;
+    font-family: ui-monospace, monospace;
+    color: var(--ts-gold);
+    text-align: center;
+    letter-spacing: 0.02em;
+    box-shadow: var(--ts-inset-top);
+}
+
+/* 亮色主题补充 */
+.light .tokensaving-settings .ts-card-preset,
+body.light .tokensaving-settings .ts-card-preset {
+    background:
+        linear-gradient(
+            135deg,
+            rgba(232, 213, 168, 0.20) 0%,
+            rgba(165, 180, 252, 0.12) 50%,
+            rgba(255, 255, 255, 0.85) 100%
+        );
+    border-color: rgba(180, 160, 110, 0.30);
+}
+
+.light .tokensaving-settings .ts-preset-btn,
+body.light .tokensaving-settings .ts-preset-btn {
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255, 255, 255, 0.88) 0%,
+            rgba(255, 255, 255, 0.72) 100%
+        );
+    border-color: rgba(0, 0, 0, 0.10);
+    color: rgba(20, 20, 30, 0.92);
+}
