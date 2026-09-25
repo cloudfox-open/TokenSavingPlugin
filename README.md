@@ -55,7 +55,7 @@ TokenSaving 是一款为 SillyTavern 设计的**上下文压缩插件**。它通
 
 
 ## 原先成本
-![成本](assets/CostConsumption.png)![成本](assets/CostConsumption2.png)![成本](assets/CostConsumption3.png)
+![成本](assets/CostConsumption.png)
 
 
 ---
