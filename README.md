@@ -1,14 +1,9 @@
 <div align="center">
 
-# TokenSavin
+# TokenSavingPlugin
 
 **为 SillyTavern 打造的 n+m 分段生长策略上下文压缩插件**
 *极致缓存命中优化 · 自动滑动窗口 · 智能预设*
-
-[![Version](https://img.shields.io/badge/version-1.4.0-blue?style=for-the-badge)](https://github.com/cloudfox-open/TokenSavingPlugin/releases)
-[![License](https://img.shields.io/badge/license-MIT-green?style=for-the-badge)](LICENSE)
-[![SillyTavern](https://img.shields.io/badge/SillyTavern-1.12.0%2B-purple?style=for-the-badge)](https://github.com/SillyTavern/SillyTavern)
-[![Author](https://img.shields.io/badge/author-cloudfox--open-orange?style=for-the-badge)](https://github.com/cloudfox-open)
 
 <!-- 📸 在这里粘贴你的截图链接，格式如下： -->
 ![主面板预览](assets/preview-main.png)
@@ -17,7 +12,7 @@
 
 ---
 
-## 📖 目录
+## 目录
 
 - [项目简介](#-项目简介)
 - [核心特性](#-核心特性)
@@ -32,9 +27,11 @@
 
 ---
 
-## 🎯 项目简介
+## 项目简介
 
 TokenSaving 是一款为 SillyTavern 设计的**上下文压缩插件**。它通过独创的 **n+m 分段生长策略**，在对话超过阈值时自动将最旧的对话压缩为摘要，并追加到 **FCC（冻结压缩典籍）** 块中，从而在保留对话连贯性的同时大幅降低 Token 消耗。
+
+
 
 ### 为什么需要它？
 
