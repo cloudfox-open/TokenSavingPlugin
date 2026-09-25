@@ -211,7 +211,7 @@ https://github.com/cloudfox-open/TokenSavingPlugin
 
 </details><details>
 <summary><b>Q5: 压缩的时候输入框为什么变灰无法发送？</b></summary>这是**保护机制**，防止压缩任务运行时用户发送消息，造成对话生成与压缩任务冲突。
-如果需要中断压缩，可以点击红色 ⏹ **停止压缩** 按钮，插件会恢复原始对话。
+如果需要中断压缩，可以点击红色 **停止压缩** 按钮，插件会恢复原始对话。
 
 </details>
 ---
