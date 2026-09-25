@@ -250,6 +250,11 @@ cloudfox-open
 - GitHub: @cloudfox-open
 - 项目主页: TokenSavingPlugin
 
+![微信](assets/weixin.png)
+![支付宝](assets/zhifubao.jpg)
+
+
+
 ## 许可证
 
 MIT License
