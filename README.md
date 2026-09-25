@@ -1,16 +1,6 @@
 <div align="center">
 
-# TokenSaving
-
-
-![Uploading 屏幕截图 2026-09-26 031449.png…]()
-
-
-
-
-
-
-
+# TokenSavin
 
 **为 SillyTavern 打造的 n+m 分段生长策略上下文压缩插件**
 *极致缓存命中优化 · 自动滑动窗口 · 智能预设*
