@@ -87,7 +87,7 @@ TokenSavingPlugin 是一款面向 SillyTavern 的**上下文压缩插件**。
 ## 安装
 ### 方式一：Git 安装（推荐）
 打开 SillyTavern 扩展面板，粘贴仓库地址：
-https://github.com/cloudfox-open/TokenSavingPlugin
+https://github.com/cloudfox-open/TokenSavingPlugin.git
 点击 `Install Extension` 完成安装。
 
 ### 方式二：手动安装
