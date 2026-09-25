@@ -37,9 +37,6 @@ TokenSaving 是一款为 SillyTavern 设计的**上下文压缩插件**。它通
 
 
 
-
-
-
 ### 为什么需要它？
 
 - **长对话 Token 爆炸**：聊到几十轮后，聊天记录会迅速占满上下文窗口
@@ -55,6 +52,11 @@ TokenSaving 是一款为 SillyTavern 设计的**上下文压缩插件**。它通
 | 截断丢记忆 | 摘要保留关键事件 / 关系 / 情感，AI 记得住 |
 | API 费用失控 | 通过稳定前缀命中 API 缓存，单次成本降低 30-50% |
 | 缓存命中差 | FCC 只追加不修改，构成稳定前缀 |
+
+
+## 原先成本
+![成本](assets/Cost consumption.png)![成本](assets/Cost consumption2.png)
+
 
 ---
 
