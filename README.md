@@ -250,9 +250,7 @@ cloudfox-open
 - GitHub: @cloudfox-open
 - 项目主页: TokenSavingPlugin
 
-<img src="assets/weixin.png" alt="主面板预览" width="500" />
-
-<img src="assets/zhifubao.jpg" alt="主面板预览" width="500" />
+<img src="assets/weixin.png" alt="主面板预览" width="200" /><img src="assets/zhifubao.jpg" alt="主面板预览" width="200" />
 
 
 
