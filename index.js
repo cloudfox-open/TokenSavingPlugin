@@ -1,9 +1,13 @@
 /**
- * TokenSavingPlugin v1.4 - 缓存命中优化
+ * TokenSavingPlugin v1.4.2 - 缓存命中优化
  *
- * v1.4 新增：
- *   - 智能预设：按上下文长度自动推荐 n/m/摘要/FCC 预算（基于实测成本数据）
- *   - 默认值更新为 4096 上下文甜点配置：n=2, m=8, 摘要=180, FCC=300
+ * v1.4.2 修复：
+ *   - 自检 FAIL 不再回退整个压缩，改为「警告不阻断」，提示写入 FCC
+ *   - 自检判定标准与压缩标准对齐（日常约定/寒暄不再算遗漏）
+ *   - 移除 3 分钟失败冷却，避免看起来"卡死不动"
+ *
+ * v1.4.1 修复：
+ *   - 去掉 jsonSchema 参数（部分后端不支持会返回 422 UnprocessableEntity）
  *
  * 实测数据参考（DeepSeek）：
  *   4096 / m=3   → 0.00107 元/次
@@ -387,11 +391,14 @@ async function runCompression(settings, reason, manual = false) {
             throw new Error('AI 未返回有效的压缩结果');
         }
 
+        // ===== 自检：改为「警告不阻断」 =====
+        let selfCheckWarning = '';
         if (settings.selfCheck) {
             updateStatus(`状态: 质量自检中... (API ${apiCounter.count}/${MAX_API_CALLS})`);
             const checkResult = await feynmanSelfCheck(summary, compressText, refContext, bumpApi, checkAbort);
             if (!checkResult.passed) {
-                throw new Error(`自检发现遗漏: ${checkResult.gaps || '未知'}`);
+                selfCheckWarning = checkResult.gaps || '';
+                console.warn('TokenSaving: 自检提示（不阻断）', selfCheckWarning);
             }
         }
 
@@ -416,6 +423,10 @@ async function runCompression(settings, reason, manual = false) {
             newFCCRaw = truncateToTokens(newFCCRaw, settings.fccBudget);
         }
 
+        // 自检警告附加到 FCC 末尾
+        if (selfCheckWarning) {
+            newFCCRaw += `\n[⚠️ 自检提示] ${selfCheckWarning}`;
+        }
         currentFCC.content.raw = newFCCRaw;
 
         await hideMessages(chat, startIdx, endIdx, currentFCC);
@@ -423,14 +434,20 @@ async function runCompression(settings, reason, manual = false) {
         injectFCC(currentFCC);
 
         const newVisibleCount = Math.floor((visibleMsgs.length - toCompress.length) / 2);
-        updateStatus(`状态: ✅ 压缩完成，保留最近 ${newVisibleCount} 轮原文 (API ${apiCounter.count}次)`);
+        if (selfCheckWarning) {
+            updateStatus(`状态: ⚠️ 完成（自检有提示）保留 ${newVisibleCount} 轮 (API ${apiCounter.count}次)`);
+            try { toastr.warning(`压缩完成，但自检提示可能遗漏：${selfCheckWarning}`, 'TokenSaving'); } catch (e) {}
+        } else {
+            updateStatus(`状态: ✅ 压缩完成，保留最近 ${newVisibleCount} 轮原文 (API ${apiCounter.count}次)`);
+            try { toastr.success(`压缩完成，保留最近 ${newVisibleCount} 轮原文`, 'TokenSaving'); } catch (e) {}
+        }
         updateUIState(settings);
-        try { toastr.success(`压缩完成，保留最近 ${newVisibleCount} 轮原文`, 'TokenSaving'); } catch (e) {}
         console.log('TokenSaving: 压缩完成', {
             compressed: toCompress.length,
             retainedRounds: newVisibleCount,
             fccTokens: estimateTokens(newFCCRaw),
             apiCalls: apiCounter.count,
+            selfCheckWarning: selfCheckWarning || '(无)',
         });
     } catch (err) {
         const isAbort = abortRequested || /中止/.test(err.message || '');
@@ -455,7 +472,7 @@ async function runCompression(settings, reason, manual = false) {
     }
 }
 
-// ==================== 压缩：分块 + JSON Schema ====================
+// ==================== 压缩：分块 + 纯文本 JSON 指令 ====================
 async function compressToSummary(text, refContext, settings, apiCounter, bumpApi, checkAbort) {
     const ctx = SillyTavern.getContext();
     const BLOCK_TOKENS = 800;
@@ -465,21 +482,6 @@ async function compressToSummary(text, refContext, settings, apiCounter, bumpApi
     const maxSummaryTokens = settings.maxSummaryTokens || 180;
     const maxChars = Math.floor(maxSummaryTokens * 1.5);
     const responseLength = Math.max(maxSummaryTokens * 4, 600);
-
-    const jsonSchema = {
-        name: 'history_summary',
-        strict: true,
-        schema: {
-            type: 'object',
-            properties: {
-                events: { type: 'string', description: '关键事件，用→连接' },
-                relationship: { type: 'string', description: '关系变化' },
-                emotion: { type: 'string', description: '情感轨迹' },
-            },
-            required: ['events', 'relationship', 'emotion'],
-            additionalProperties: false,
-        },
-    };
 
     for (let i = 0; i < blocks.length; i++) {
         checkAbort();
@@ -516,25 +518,14 @@ ${blockText}
         try {
             bumpApi();
             result = await withTimeout(
-                ctx.generateQuietPrompt({ quietPrompt: prompt, responseLength, jsonSchema }),
+                ctx.generateQuietPrompt({ quietPrompt: prompt, responseLength }),
                 90000,
                 `压缩分块 ${i + 1}/${blocks.length}`,
             );
         } catch (err) {
             if (abortRequested) throw err;
-            console.warn(`TokenSaving: 分块 ${i + 1} jsonSchema 失败，降级重试`, err.message || err);
-            try {
-                bumpApi();
-                result = await withTimeout(
-                    ctx.generateQuietPrompt({ quietPrompt: prompt, responseLength }),
-                    90000,
-                    `压缩分块 ${i + 1}/${blocks.length}(降级)`,
-                );
-            } catch (err2) {
-                if (abortRequested) throw err2;
-                console.warn(`TokenSaving: 分块 ${i + 1} 降级也失败，跳过`, err2.message || err2);
-                continue;
-            }
+            console.warn(`TokenSaving: 分块 ${i + 1} 请求失败，跳过`, err.message || err);
+            continue;
         }
 
         const parsed = parseSummaryJson(result || '');
@@ -556,10 +547,16 @@ function parseSummaryJson(text) {
     const raw = String(text || '').trim();
     if (!raw) return result;
 
-    const firstBrace = raw.indexOf('{');
-    const lastBrace = raw.lastIndexOf('}');
+    // 先剥离 markdown 代码块包裹（```json ... ```）
+    let cleaned = raw
+        .replace(/^```(?:json)?\s*/i, '')
+        .replace(/\s*```$/i, '')
+        .trim();
+
+    const firstBrace = cleaned.indexOf('{');
+    const lastBrace = cleaned.lastIndexOf('}');
     if (firstBrace >= 0 && lastBrace > firstBrace) {
-        const jsonStr = raw.slice(firstBrace, lastBrace + 1)
+        const jsonStr = cleaned.slice(firstBrace, lastBrace + 1)
             .replace(/\r\n/g, '\\n').replace(/\n/g, '\\n').replace(/\r/g, '\\n');
         try {
             const obj = JSON.parse(jsonStr);
@@ -574,25 +571,37 @@ function parseSummaryJson(text) {
 
     const grab = (field) => {
         const re = new RegExp(`"${field}"\\s*:\\s*"((?:[^"\\\\]|\\\\.)*)`, 'i');
-        const match = raw.match(re);
+        const match = cleaned.match(re);
         return match ? match[1].replace(/\\n/g, ' ').trim() : '';
     };
     result.events = grab('events');
     result.relationship = grab('relationship');
     result.emotion = grab('emotion');
 
-    if (!result.events && raw.length > 0 && raw.length < 800) {
-        result.events = raw.replace(/^[\[{]+|[\]}]+$/g, '').trim().substring(0, 200);
+    if (!result.events && cleaned.length > 0 && cleaned.length < 800) {
+        result.events = cleaned.replace(/^[\[{]+|[\]}]+$/g, '').trim().substring(0, 200);
     }
     return result;
 }
 
-// ==================== Feynman 自检 ====================
+// ==================== Feynman 自检（警告不阻断） ====================
 async function feynmanSelfCheck(summary, originalText, refContext, bumpApi, checkAbort) {
     try {
         checkAbort();
         const ctx = SillyTavern.getContext();
-        const prompt = `你是质量检查员。对比原文和压缩摘要，检查是否遗漏了对后续剧情有影响的关键信息（如承诺、约定、新设定、关键转折）。
+        const prompt = `你是质量检查员。对比原文和压缩摘要，判断是否遗漏了【影响长期剧情走向】的关键信息。
+
+## 判定标准（务必严格遵守）
+**只把以下几类视为"关键信息遗漏"：**
+- 影响主线/长期关系的重大事件（分离、告白、决裂、身份揭晓）
+- 会改变后续行为逻辑的承诺或誓言（例如"答应带她离开""约定再也不见"）
+- 关系到世界观的新设定（新角色、新能力、新规则）
+
+**以下一律不算遗漏，忽略即可：**
+- 日常寒暄、吃饭、打招呼、作息安排
+- 一次性的临时约定（今天/这周末/中午前的安排）
+- 场景/道具细节（剪花、插瓶、送礼物等修饰性描写）
+- 情绪化的语气词、玩笑、打趣
 
 ## 参考设定
 ${String(refContext || '无').substring(0, 400)}
@@ -603,8 +612,8 @@ ${originalText.substring(0, 800)}
 ## 压缩摘要
 ${summary}
 
-如果没有关键信息遗漏，请严格回复 "PASS"。
-如果有遗漏，请严格以 "FAIL: " 开头，后接遗漏的具体内容（一句话）。`;
+如果无关键遗漏，严格回复 "PASS"（只回复这两个字）。
+如果有关键遗漏，严格以 "FAIL: " 开头，后接一句话说明。`;
 
         bumpApi();
         const result = await withTimeout(
@@ -879,6 +888,7 @@ function updateStatus(text, state) {
         if (s.includes('❌') || s.includes('失败') || s.includes('⏹')) return 'error';
         if (s.includes('🗜️') || s.includes('🚨') || s.includes('压缩') || s.includes('自检') || s.includes('AI 压缩')) return 'busy';
         if (s.includes('🌱')) return 'growing';
+        if (s.includes('⚠️')) return 'busy';
         return 'idle';
     };
 
