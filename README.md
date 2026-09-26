@@ -216,10 +216,10 @@ m值推荐参考
 如果需要中断压缩，可以点击红色 **停止压缩** 按钮，插件会恢复原始对话。不用担心，压缩通常只要1~2秒。
 
 </details><details>
-<summary><b>Q6: 为什么开启Feynman的时候一堆API返回错误UnprocessableEntity？关掉的时候只会出现一次返回错误？</b></summary>“/chat/completions”兼容 OpenAI 的对话接口）不支持 OpenAI 新版“`response_format={"type":"json_schema", ...}`”结构化输出；只有 DeepSeek 新的“/responses”**API 才支持 json_schema 参数**。
+<summary><b>Q6: 为什么开启Feynman的时候一堆API返回错误UnprocessableEntity？关掉的时候只会出现一次返回错误？</b></summary>“/chat/completions”兼容OpenAI的对话接口，不支持OpenAI 新版“`response_format={"type":"json_schema", ...}`”结构化输出，只有 DeepSeek，新的“/responses”**API才支持json_schema 参数**。
 
 </details><details>
-<summary><b>Q7: 为什么安装的时候出现SyntaxError: Expected ',' or '}' after property value in JSON at position 416 (line 14 column 33)？</b></summary>这是因为插件代码原因，现已修复。
+<summary><b>Q7: 为什么安装的时候出现SyntaxError:Expected','or'}'after property value in JSON at position 416 (line 14 column 33)？</b></summary>这是因为插件代码原因，现已修复。
 
 </details>
 ---
