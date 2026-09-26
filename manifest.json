@@ -7,7 +7,7 @@
     "js": "index.js",
     "css": "style.css",
     "author": "cloudfox-open",
-    "version": "1.4.0",
+    "version": "1.4.1",
     "homePage": "https://github.com/cloudfox-open/TokenSavingPlugin",
     "auto_update": true,
     "minimum_client_version": "1.12.0",
