@@ -54,7 +54,6 @@ TokenSavingPlugin 可以将缓存命中率从 **45% 提升到至少 90%**，避�
 在改善聊天体验的同时，显著降低 API 开销。
 
 ![主面板预览](assets/Panel.png)
-![主面板预览](assets/Panel2.png)
 
 ---
 
