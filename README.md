@@ -16,8 +16,6 @@
 - [缓存命中实测效果](#缓存命中实测效果)
 - [核心特性](#核心特性)
 - [安装](#安装)
-- [方式一：Git 安装（推荐）](#方式一git-安装推荐)
-- [方式二：手动安装](#方式二手动安装)
 - [快速开始](#快速开始)
 - [参数详解](#参数详解)
 - [m 值推荐参考](#m-值推荐参考)
@@ -64,8 +62,8 @@ TokenSavingPlugin 是一款面向 SillyTavern 的**上下文压缩插件**。
 ![成本](assets/CostConsumption.png)
 
 
-
-### 用了此插件后,缓存命中实测效果
+用了此插件后
+### 缓存命中实测效果
 原生酒馆动态上下文会不断裁剪历史，一旦旧消息被截断，缓存前缀直接断裂，后续全部内容无法复用缓存。
 而本插件将溢出窗口的历史压缩为 200~300 Token 的摘要并前置注入对话，持续追加的稳定前缀可以稳定命中 API 缓存。
 
@@ -96,14 +94,13 @@ TokenSavingPlugin 是一款面向 SillyTavern 的**上下文压缩插件**。
 
 ---
 
-## 安装
-### 方式一：Git 安装（推荐）
+### 安装
+方式一：Git 安装（推荐）
 打开 SillyTavern 扩展面板，粘贴仓库地址：
 https://github.com/cloudfox-open/TokenSavingPlugin
 点击 `Install Extension` 完成安装。
 
-### 方式二：手动安装
-
+方式二：手动安装
 1. 下载本仓库源码
 2. 将文件夹重命名为 `TokenSavingPlugin`
 3. 放入目录：`SillyTavern/public/scripts/extensions/third-party/`
@@ -112,7 +109,7 @@ https://github.com/cloudfox-open/TokenSavingPlugin
 > 
 > 提示：手动安装模式下，自动更新会提示 `not a Git repository`，该报错不影响插件全部功能。Git 安装方式无此提示。
 
-## 快速开始
+### 快速开始
 
 1. 加载角色卡，正常开启对话
 2. 打开扩展面板，找到 TokenSavingPlugin
@@ -120,9 +117,9 @@ https://github.com/cloudfox-open/TokenSavingPlugin
 4. 正常聊天，当对话达到阈值后会自动触发压缩，状态卡片实时展示进度
 5. 如果需要立即压缩，点击**立即压缩** 手动触发
 
-## 参数详解
+参数详解
 
-表格
+
 
 | 参数 | 说明 | 默认值 | 推荐范围 |
 | ---- | :--- | -----: | :------ |
