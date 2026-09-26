@@ -1,3 +1,5 @@
+[English](README.md) | [简体中文](README.zh-CN.md)
+
 # TokenSavingPlugin
 
 > SillyTavern 专属 · n+m 分段生长策略上下文压缩插件  
