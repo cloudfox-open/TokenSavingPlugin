@@ -228,6 +228,9 @@ https://github.com/cloudfox-open/TokenSavingPlugin
 </details><details>
 <summary><b>Q6: 为什么压缩的时候出现一堆红色警示？</b></summary>这是因为酒馆不支持某些字段，不过不用担心，一切正常，不会有任何影响。
 
+</details><details>
+<summary><b>Q7: 为什么安装的时候出现SyntaxError: Expected ',' or '}' after property value in JSON at position 416 (line 14 column 33)？</b></summary>这是因为插件代码原因，现已修复。
+
 </details>
 ---
 
