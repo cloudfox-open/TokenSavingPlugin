@@ -11,7 +11,7 @@
     "homePage": "https://github.com/cloudfox-open/TokenSavingPlugin",
     "auto_update": true,
     "minimum_client_version": "1.12.0",
-    "description": "description": "通过 n+m 分段生长策略压缩聊天记录，提升缓存命中率，节省 Token。",
+    "description": "通过 n+m 分段生长策略压缩聊天记录，提升缓存命中率，节省 Token。",
     "hooks": {
         "activate": "init"
     }
