@@ -25,7 +25,7 @@ const POLL_INTERVAL = 30000;
 const I18N = {
     zh: {
         // 标题与工具栏
-        title: '💾 TokenSaving',
+        title: 'TokenSaving',
         theme_switch_soft: '切换到 新拟态 Soft UI',
         theme_switch_dark: '切换到 暗黑哥特',
         lang_btn_label: 'EN',
