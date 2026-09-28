@@ -177,7 +177,7 @@ const I18N = {
     },
 
     en: {
-        title: '💾 TokenSaving',
+        title: 'TokenSaving',
         theme_switch_soft: 'Switch to Neumorphism Soft UI',
         theme_switch_dark: 'Switch to Dark Gothic',
         lang_btn_label: '中文',
