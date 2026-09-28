@@ -1,0 +1,215 @@
+<div class="tokensaving-settings">
+    <div class="inline-drawer">
+        <div class="inline-drawer-toggle inline-drawer-header">
+            <b data-i18n="title">💾 TokenSaving</b>
+            <div class="inline-drawer-icon fa-solid fa-circle-chevron-down down"></div>
+        </div>
+        <div class="inline-drawer-content">
+
+            <!-- ===== 顶部工具栏：主题 + 语言 ===== -->
+            <div class="ts-toolbar">
+                <input type="checkbox" id="ts-style-toggle" class="ts-style-toggle">
+                <label for="ts-style-toggle" class="ts-style-switch">
+                    <span class="ts-style-switch-icon">†</span>
+                    <span class="ts-style-switch-soft" data-i18n="theme_switch_soft">切换到 新拟态 Soft UI</span>
+                    <span class="ts-style-switch-dark" data-i18n="theme_switch_dark">切换到 暗黑哥特</span>
+                </label>
+                <button id="tokensaving_lang_btn" class="ts-lang-switch" type="button" title="Switch language / 切换语言">
+                    <span class="ts-lang-flag">🌐</span>
+                    <span class="ts-lang-text" id="tokensaving_lang_text">EN</span>
+                </button>
+            </div>
+            <!-- ===== 工具栏结束 ===== -->
+
+            <div class="ts-status-card" id="tokensaving_status_card">
+                <div class="ts-status-header">
+                    <span class="ts-status-dot is-idle" id="tokensaving_status_dot"></span>
+                    <span class="ts-status-text" id="tokensaving_status" data-i18n="status_ready">就绪</span>
+                </div>
+
+                <div class="ts-progress">
+                    <div class="ts-progress-fill" id="tokensaving_progress_bar" style="width:0%"></div>
+                </div>
+
+                <div class="ts-metrics">
+                    <div class="ts-metric">
+                        <span class="ts-metric-label" data-i18n="metric_rounds">轮数</span>
+                        <span class="ts-metric-value" id="tokensaving_rounds">0 / 0</span>
+                    </div>
+                    <div class="ts-metric">
+                        <span class="ts-metric-label" data-i18n="metric_context">上下文</span>
+                        <span class="ts-metric-value" id="tokensaving_ctx">0%</span>
+                    </div>
+                    <div class="ts-metric">
+                        <span class="ts-metric-label" data-i18n="metric_fcc">FCC</span>
+                        <span class="ts-metric-value" id="tokensaving_fcctok">0 tok</span>
+                    </div>
+                </div>
+
+                <div id="tokensaving_meta" style="display:none"></div>
+            </div>
+
+            <div class="ts-card ts-card-preset">
+                <div class="ts-card-title">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i>
+                    <span data-i18n="preset_title">智能预设</span>
+                    <span class="ts-card-badge" id="tokensaving_detected_ctx">...</span>
+                </div>
+
+                <div class="ts-preset-hint" data-i18n="preset_hint">
+                    根据当前模型上下文长度自动选择最优参数（基于实测成本数据）。
+                </div>
+
+                <div class="ts-preset-grid">
+                    <button class="ts-preset-btn" data-preset="auto" type="button">
+                        <div class="ts-preset-btn-head">
+                            <i class="fa-solid fa-bolt"></i>
+                            <b data-i18n="preset_auto">自动（推荐）</b>
+                        </div>
+                        <div class="ts-preset-btn-desc" data-i18n="preset_auto_desc">按上下文自动选择</div>
+                    </button>
+                    <button class="ts-preset-btn" data-preset="eco" type="button">
+                        <div class="ts-preset-btn-head">
+                            <i class="fa-solid fa-leaf"></i>
+                            <b data-i18n="preset_eco">省成本</b>
+                        </div>
+                        <div class="ts-preset-btn-desc" data-i18n="preset_eco_desc">更少触发，单价最低</div>
+                    </button>
+                    <button class="ts-preset-btn" data-preset="fast" type="button">
+                        <div class="ts-preset-btn-head">
+                            <i class="fa-solid fa-rabbit"></i>
+                            <b data-i18n="preset_fast">省内存</b>
+                        </div>
+                        <div class="ts-preset-btn-desc" data-i18n="preset_fast_desc">压缩更勤，上下文更小</div>
+                    </button>
+                    <button class="ts-preset-btn" data-preset="quality" type="button">
+                        <div class="ts-preset-btn-head">
+                            <i class="fa-solid fa-gem"></i>
+                            <b data-i18n="preset_quality">高质量</b>
+                        </div>
+                        <div class="ts-preset-btn-desc" data-i18n="preset_quality_desc">更长摘要，保留更多</div>
+                    </button>
+                </div>
+
+                <div class="ts-preset-current" id="tokensaving_preset_current">
+                    当前：自定义配置
+                </div>
+            </div>
+
+            <div class="ts-card ts-card-compact">
+                <label class="ts-switch-row">
+                    <div class="ts-row-label">
+                        <b data-i18n="enable_auto">启用自动压缩</b>
+                        <small data-i18n="enable_auto_desc">达到触发条件时自动压缩旧对话并注入 FCC</small>
+                    </div>
+                    <span class="ts-switch">
+                        <input id="tokensaving_enabled" type="checkbox" checked />
+                        <span class="ts-switch-slider"></span>
+                    </span>
+                </label>
+            </div>
+
+            <div class="ts-card">
+                <div class="ts-card-title">
+                    <i class="fa-solid fa-window-restore"></i>
+                    <span data-i18n="window_title">窗口策略</span>
+                    <span class="ts-card-badge" id="tokensaving_window_badge">n=2 · m=8</span>
+                </div>
+
+                <div class="ts-field">
+                    <div class="ts-field-head">
+                        <label for="tokensaving_n"><span data-i18n="window_n_label">保留最近原文轮数</span> <code>n</code></label>
+                        <input id="tokensaving_n" type="number" min="1" max="10" value="2" class="ts-num" />
+                    </div>
+                    <small class="ts-hint" data-i18n="window_n_desc">始终保留最近 n 轮对话原文（不压缩）</small>
+                </div>
+
+                <div class="ts-field">
+                    <div class="ts-field-head">
+                        <label for="tokensaving_m"><span data-i18n="window_m_label">滑动窗口增量</span> <code>m</code></label>
+                        <input id="tokensaving_m" type="number" min="1" max="80" value="8" class="ts-num" />
+                    </div>
+                    <small class="ts-hint" data-i18n="window_m_desc">可见轮数超过 n+m 时触发压缩，压缩后回到 n 轮</small>
+                </div>
+
+                <div class="ts-visual-wrap">
+                    <div class="ts-visual-legend">
+                        <span><i class="ts-dot ts-dot-retain"></i> <span data-i18n="legend_retain">保留区 (1~n)</span></span>
+                        <span><i class="ts-dot ts-dot-compress"></i> <span data-i18n="legend_compress">压缩区 (n+1~n+m)</span></span>
+                    </div>
+                    <div class="ts-visual" id="tokensaving_visual"></div>
+                </div>
+            </div>
+
+            <div class="ts-card">
+                <div class="ts-card-title">
+                    <i class="fa-solid fa-gauge-high"></i>
+                    <span data-i18n="threshold_title">阈值与预算</span>
+                </div>
+
+                <div class="ts-field">
+                    <div class="ts-field-head">
+                        <label for="tokensaving_threshold" data-i18n="threshold_label">Token 兜底阈值 (%)</label>
+                        <input id="tokensaving_threshold" type="number" min="50" max="95" value="80" class="ts-num" />
+                    </div>
+                    <small class="ts-hint" data-i18n="threshold_desc">仅当窗口未溢出但 Token 逼近上限时兜底触发</small>
+                </div>
+
+                <div class="ts-field">
+                    <div class="ts-field-head">
+                        <label for="tokensaving_max_summary_tokens" data-i18n="summary_label">单次摘要上限 (tok)</label>
+                        <input id="tokensaving_max_summary_tokens" type="number" min="50" max="1000" value="180" class="ts-num" />
+                    </div>
+                    <small class="ts-hint" data-i18n="summary_desc">防止单次摘要过大导致上下文爆炸</small>
+                </div>
+
+                <div class="ts-field">
+                    <div class="ts-field-head">
+                        <label for="tokensaving_fcc_budget" data-i18n="fcc_budget_label">FCC 总预算 (tok)</label>
+                        <input id="tokensaving_fcc_budget" type="number" min="200" max="2000" value="300" class="ts-num" />
+                    </div>
+                    <small class="ts-hint" data-i18n="fcc_budget_desc">FCC 超过此值时自动折叠重组</small>
+                </div>
+
+                <label class="ts-switch-row ts-switch-row-tight">
+                    <div class="ts-row-label">
+                        <b data-i18n="selfcheck_label">Feynman 质量自检</b>
+                        <small data-i18n="selfcheck_desc">压缩后检测遗漏，失败自动回退不隐藏消息。长篇剧情、角色扮演、前情动辄影响后续几十轮的走向推荐开启</small>
+                    </div>
+                    <span class="ts-switch">
+                        <input id="tokensaving_selfcheck" type="checkbox" checked />
+                        <span class="ts-switch-slider"></span>
+                    </span>
+                </label>
+            </div>
+
+            <div class="ts-actions">
+                <button id="tokensaving_manual_btn" class="ts-btn ts-btn-primary" type="button">
+                    <i class="fa-solid fa-bolt"></i>
+                    <span data-i18n="btn_manual">立即压缩</span>
+                </button>
+                <button id="tokensaving_stop_btn" class="ts-btn ts-btn-danger" type="button" style="display:none">
+                    <i class="fa-solid fa-stop"></i>
+                    <span data-i18n="btn_stop">停止压缩</span>
+                </button>
+                <button id="tokensaving_clear_btn" class="ts-btn ts-btn-ghost" type="button">
+                    <i class="fa-solid fa-rotate-left"></i>
+                    <span data-i18n="btn_clear">清除 FCC</span>
+                </button>
+            </div>
+
+            <details id="tokensaving_fcc_panel" class="ts-fcc-panel" style="display:none">
+                <summary>
+                    <span><i class="fa-solid fa-scroll"></i> <span data-i18n="fcc_panel_title">FCC 摘要内容</span></span>
+                    <span id="tokensaving_fcc_meta" class="ts-fcc-meta"></span>
+                </summary>
+                <pre id="tokensaving_fcc_content" class="ts-fcc-content"></pre>
+            </details>
+
+            <div class="ts-footer">
+                <span data-i18n="footer_hint">💡 实测最优：4096 n=2, m=8 · 8192 n=2, m=28 · 32k+ n=3, m=40</span>
+            </div>
+
+        </div>
+    </div>
+</div>
