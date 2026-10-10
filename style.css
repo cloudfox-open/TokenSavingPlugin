@@ -1,0 +1,495 @@
+/* ============================================================
+   TokenSavingPlugin — 原生极简风格 (ST 原生 UI 对齐)
+   ============================================================ */
+
+.tokensaving-settings {
+    --ts-accent: var(--SmartThemeQuoteColor, #4a8cff);
+    --ts-bg: var(--SmartThemeBlurTintColor, #1e1e1e);
+    --ts-border: var(--SmartThemeBorderColor, rgba(255, 255, 255, 0.1));
+    --ts-text: var(--SmartThemeBodyColor, #e0e0e0);
+    --ts-text-dim: var(--SmartThemeEmColor, #888888);
+    --ts-input-bg: rgba(0, 0, 0, 0.2);
+    --ts-hover-bg: rgba(255, 255, 255, 0.05);
+
+    --ts-r: 4px;
+    --ts-r-sm: 3px;
+    --ts-font-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+}
+
+/* 强制继承原生字体，不搞特殊化 */
+.tokensaving-settings .inline-drawer-content {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 10px 0;
+    font-family: inherit;
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--ts-text);
+}
+
+/* ---------- 顶部工具栏 ---------- */
+.ts-toolbar {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 4px;
+}
+
+.ts-lang-switch {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 6px 12px;
+    border-radius: var(--ts-r);
+    background: var(--ts-input-bg);
+    border: 1px solid var(--ts-border);
+    color: var(--ts-text);
+    font-size: 12px;
+    cursor: pointer;
+    transition: background .15s, border-color .15s;
+}
+.ts-lang-switch:hover {
+    background: var(--ts-hover-bg);
+    border-color: var(--ts-text-dim);
+}
+.ts-lang-flag { font-size: 13px; }
+
+/* ---------- 状态卡 ---------- */
+.ts-status-card {
+    padding: 10px 12px;
+    border-radius: var(--ts-r);
+    background: var(--ts-input-bg);
+    border: 1px solid var(--ts-border);
+}
+
+.ts-status-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+
+.ts-status-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--ts-text-dim);
+}
+.ts-status-dot.is-growing { background: var(--ts-accent); }
+.ts-status-dot.is-busy    { background: #d99a2b; }
+.ts-status-dot.is-success { background: #34b981; }
+.ts-status-dot.is-error   { background: #e05a5a; }
+
+.ts-status-text {
+    font-size: 12.5px;
+    font-weight: 500;
+    color: var(--ts-text);
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.ts-progress {
+    height: 4px;
+    border-radius: 2px;
+    background: rgba(255, 255, 255, 0.1);
+    overflow: hidden;
+    margin-bottom: 10px;
+}
+.ts-progress-fill {
+    height: 100%;
+    background: var(--ts-accent);
+    transition: width .3s ease;
+}
+
+.ts-metrics {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px;
+}
+.ts-metric {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+.ts-metric-label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: .05em;
+    color: var(--ts-text-dim);
+}
+.ts-metric-value {
+    font-size: 12.5px;
+    font-weight: 600;
+    font-family: var(--ts-font-mono);
+}
+
+/* ---------- 卡片区 ---------- */
+.ts-card {
+    padding: 10px 12px;
+    border-radius: var(--ts-r);
+    background: var(--ts-bg);
+    border: 1px solid var(--ts-border);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.ts-card-compact { padding: 8px 12px; gap: 0; }
+
+.ts-card-title {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--ts-text);
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--ts-border);
+}
+.ts-card-title i {
+    color: var(--ts-text-dim);
+    font-size: 12px;
+}
+.ts-card-badge {
+    margin-left: auto;
+    font-size: 11px;
+    padding: 2px 6px;
+    border-radius: var(--ts-r-sm);
+    background: var(--ts-input-bg);
+    color: var(--ts-text-dim);
+    font-family: var(--ts-font-mono);
+}
+
+/* ---------- 字段 & 输入框 ---------- */
+.ts-field { display: flex; flex-direction: column; gap: 4px; }
+.ts-field-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+}
+.ts-field-head label {
+    font-size: 12.5px;
+    color: var(--ts-text);
+    flex: 1;
+}
+.ts-field-head code {
+    padding: 1px 4px;
+    border-radius: var(--ts-r-sm);
+    background: var(--ts-input-bg);
+    font-size: 11px;
+    color: var(--ts-text-dim);
+    font-family: var(--ts-font-mono);
+}
+.ts-num {
+    width: 72px;
+    padding: 4px 8px;
+    border-radius: var(--ts-r-sm);
+    border: 1px solid var(--ts-border);
+    background: var(--ts-input-bg);
+    color: var(--ts-text);
+    font-size: 12px;
+    font-family: var(--ts-font-mono);
+    text-align: right;
+    outline: none;
+}
+.ts-num:focus { border-color: var(--ts-accent); }
+.ts-hint {
+    font-size: 11px;
+    color: var(--ts-text-dim);
+}
+
+/* ---------- 开关 ---------- */
+.ts-switch-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    cursor: pointer;
+    user-select: none;
+}
+.ts-switch-row-tight {
+    padding-top: 8px;
+    border-top: 1px solid var(--ts-border);
+}
+.ts-row-label {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    flex: 1;
+    min-width: 0;
+}
+.ts-row-label b { font-size: 12.5px; font-weight: 600; }
+.ts-row-label small { font-size: 11px; color: var(--ts-text-dim); }
+
+.ts-switch {
+    position: relative;
+    width: 34px;
+    height: 18px;
+    flex-shrink: 0;
+}
+.ts-switch input {
+    position: absolute;
+    opacity: 0;
+    width: 100%; height: 100%;
+    margin: 0;
+    cursor: pointer;
+    z-index: 2;
+}
+.ts-switch-slider {
+    position: absolute;
+    inset: 0;
+    border-radius: 9px;
+    background: rgba(255, 255, 255, 0.15);
+    transition: background .2s;
+    pointer-events: none;
+}
+.ts-switch-slider::before {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: #fff;
+    transition: transform .2s;
+}
+.ts-switch input:checked + .ts-switch-slider {
+    background: var(--ts-accent);
+}
+.ts-switch input:checked + .ts-switch-slider::before {
+    transform: translateX(16px);
+}
+
+/* ---------- 窗口可视化 ---------- */
+.ts-visual-wrap {
+    padding: 8px;
+    border-radius: var(--ts-r-sm);
+    background: var(--ts-input-bg);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+.ts-visual-legend {
+    display: flex;
+    gap: 12px;
+    font-size: 10.5px;
+    color: var(--ts-text-dim);
+}
+.ts-visual-legend span { display: flex; align-items: center; gap: 4px; }
+.ts-dot {
+    display: inline-block;
+    width: 8px; height: 8px;
+    border-radius: 2px;
+}
+.ts-dot-retain   { background: var(--ts-accent); }
+.ts-dot-compress { background: #d99a2b; }
+.ts-visual { display: flex; flex-wrap: wrap; gap: 4px; }
+.ts-cell {
+    width: 20px; height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 2px;
+    font-size: 10px;
+    font-family: var(--ts-font-mono);
+    color: var(--ts-text-dim);
+    background: var(--ts-bg);
+    border: 1px solid var(--ts-border);
+}
+.ts-cell-retain.ts-cell-filled {
+    background: var(--ts-accent);
+    color: #fff;
+    border-color: transparent;
+}
+.ts-cell-compress.ts-cell-filled {
+    background: #d99a2b;
+    color: #fff;
+    border-color: transparent;
+}
+.ts-cell-overflow {
+    background: #e05a5a !important;
+    color: #fff !important;
+    border-color: transparent !important;
+}
+
+/* ---------- 按钮 ---------- */
+.ts-actions { display: flex; gap: 8px; }
+.ts-actions .ts-btn { flex: 1; }
+.ts-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 6px 12px;
+    border-radius: var(--ts-r);
+    border: 1px solid var(--ts-border);
+    background: var(--ts-input-bg);
+    color: var(--ts-text);
+    font-size: 12.5px;
+    font-family: inherit;
+    cursor: pointer;
+    transition: background .15s, border-color .15s;
+}
+.ts-btn i { font-size: 12px; }
+.ts-btn:hover {
+    background: var(--ts-hover-bg);
+    border-color: var(--ts-text-dim);
+}
+.ts-btn-primary {
+    background: var(--ts-accent);
+    color: #fff;
+    border-color: var(--ts-accent);
+}
+.ts-btn-primary:hover {
+    filter: brightness(1.1);
+    background: var(--ts-accent);
+}
+.ts-btn-danger {
+    background: #e05a5a;
+    color: #fff;
+    border-color: #e05a5a;
+}
+.ts-btn-ghost:hover { color: #e05a5a; border-color: #e05a5a; }
+
+/* ---------- 预设 ---------- */
+.ts-preset-hint { font-size: 11.5px; color: var(--ts-text-dim); }
+.ts-preset-grid { display: grid; grid-template-columns: 1fr; gap: 8px; }
+.ts-preset-btn {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 8px 12px;
+    border-radius: var(--ts-r);
+    border: 1px solid var(--ts-border);
+    background: var(--ts-input-bg);
+    color: var(--ts-text);
+    font-family: inherit;
+    cursor: pointer;
+    text-align: left;
+    transition: background .15s, border-color .15s;
+}
+.ts-preset-btn:hover { background: var(--ts-hover-bg); }
+.ts-preset-btn.is-active {
+    border-color: var(--ts-accent);
+    background: rgba(74, 140, 255, 0.1);
+}
+.ts-preset-btn-head { display: flex; align-items: center; gap: 6px; font-size: 12.5px; font-weight: 600; }
+.ts-preset-btn-head i { color: var(--ts-accent); }
+.ts-preset-btn-desc { font-size: 11px; color: var(--ts-text-dim); }
+.ts-preset-current {
+    padding: 6px;
+    border-radius: var(--ts-r-sm);
+    background: var(--ts-input-bg);
+    font-size: 11px;
+    font-family: var(--ts-font-mono);
+    color: var(--ts-text-dim);
+    text-align: center;
+}
+
+/* ---------- FCC 面板 ---------- */
+.ts-fcc-panel {
+    border-radius: var(--ts-r);
+    border: 1px solid var(--ts-border);
+    overflow: hidden;
+    background: var(--ts-bg);
+}
+.ts-fcc-panel summary {
+    padding: 8px 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    list-style: none;
+    font-size: 12.5px;
+    color: var(--ts-text);
+}
+.ts-fcc-panel summary::-webkit-details-marker { display: none; }
+.ts-fcc-panel summary:hover { background: var(--ts-hover-bg); }
+.ts-fcc-panel summary i { color: var(--ts-text-dim); margin-right: 6px; }
+.ts-fcc-meta { font-size: 11px; font-family: var(--ts-font-mono); color: var(--ts-text-dim); }
+.ts-fcc-content {
+    margin: 0;
+    padding: 10px 12px;
+    font-family: var(--ts-font-mono);
+    font-size: 11.5px;
+    line-height: 1.5;
+    color: var(--ts-text-dim);
+    white-space: pre-wrap;
+    word-break: break-word;
+    max-height: 240px;
+    overflow-y: auto;
+    border-top: 1px solid var(--ts-border);
+    background: var(--ts-input-bg);
+}
+
+/* ---------- 页脚 ---------- */
+.ts-footer {
+    padding: 8px;
+    font-size: 11px;
+    color: var(--ts-text-dim);
+    text-align: center;
+}
+
+/* ============================================================
+   高级功能折叠面板 (原生 details 标签实现)
+   ============================================================ */
+.ts-advanced-panel {
+    padding: 0;
+    gap: 0;
+    overflow: hidden;
+}
+
+.ts-advanced-panel summary.ts-card-title {
+    padding: 12px 14px;
+    margin: 0;
+    border-bottom: none;
+    cursor: pointer;
+    user-select: none;
+    list-style: none;
+    transition: background .15s;
+}
+
+.ts-advanced-panel summary.ts-card-title::-webkit-details-marker {
+    display: none;
+}
+
+.ts-advanced-panel summary.ts-card-title:hover {
+    background: var(--ts-hover-bg);
+}
+
+.ts-advanced-panel[open] summary.ts-card-title {
+    border-bottom: 1px solid var(--ts-border);
+}
+
+.ts-advanced-arrow {
+    margin-left: auto;
+    color: var(--ts-text-dim);
+    transition: transform .2s ease;
+}
+
+.ts-advanced-panel[open] .ts-advanced-arrow {
+    transform: rotate(180deg);
+}
+
+.ts-advanced-content {
+    padding: 12px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    background: var(--ts-bg);
+}
+
+.ts-advanced-content .ts-card {
+    border: none;
+    padding: 0;
+    background: transparent;
+    gap: 10px;
+}
+
+.ts-advanced-content .ts-card:not(:first-child) .ts-card-title {
+    margin-top: 4px;
+}
+
