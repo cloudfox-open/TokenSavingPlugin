@@ -7,8 +7,6 @@
 
 **Tags**: `<SillyTavern>` `<sillytavern>` `<plugin>` `<cache hit>` `<roleplay>` `<context>` `<prompt>` `<caching mechanism>` `<SillyTavern plugin>` `<save money>` `<API>` `<LLM>` `<summary>` `<abstract>` `<Token>` `<Big Fat Fish>`
 
-![Main panel preview](https://raw.githubusercontent.com/cloudfox-open/TokenSavingPlugin/main/assets/preview-main.png)
-
 ---
 
 ## Table of Contents
