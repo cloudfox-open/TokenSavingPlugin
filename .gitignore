@@ -1,0 +1,14 @@
+node_modules/
+package-lock.json
+.vscode/
+.idea/
+*.swp
+*~
+.DS_Store
+Thumbs.db
+*.log
+*.bak
+.env
+.env.local
+.tmp/
+temp/
